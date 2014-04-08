@@ -171,6 +171,26 @@ class SteppingPiece < Piece
     raise "Cannot generate moves for an abstract SteppingPiece"
   end
 
+  def step_move
+    current_pos = self.pos
+
+    # ||
+    # out of board boundaries
+    new_pos = get_new_pos(current_pos, diff)
+
+    # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
+    unless out_of_bounds( new_pos )
+      if self.board.empty?( new_pos )
+        return new_pos
+      else  # board[pos] is not empty
+        piece_at_pos = self.board.at( new_pos )
+        if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
+          return new_pos
+        end
+      end
+    end
+    nil
+  end
 end
 
 class King < SteppingPiece
@@ -187,29 +207,30 @@ class King < SteppingPiece
                [ 0, -1]
             ]
     #returns all move regardless of board boundaries
-    valid_pos = []
+    #valid_pos = []
 
     # move in each direction until hit a next piece
-    self.diffs.each do |diff|
-      current_pos = self.pos
-
-      # ||
-      # out of board boundaries
-      new_pos = get_new_pos(current_pos, diff)
-
-      # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
-      unless out_of_bounds( new_pos )
-        if self.board.empty?( new_pos )
-          valid_pos << new_pos
-        else  # board[pos] is not empty
-          piece_at_pos = self.board.at( new_pos )
-          if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
-            valid_pos << new_pos
-          end
-        end
-      end
+    valid_pos = self.diffs.map do |diff|
+      step_move
+      # current_pos = self.pos
+      #
+      # # ||
+      # # out of board boundaries
+      # new_pos = get_new_pos(current_pos, diff)
+      #
+      # # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
+      # unless out_of_bounds( new_pos )
+      #   if self.board.empty?( new_pos )
+      #     valid_pos << new_pos
+      #   else  # board[pos] is not empty
+      #     piece_at_pos = self.board.at( new_pos )
+      #     if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
+      #       valid_pos << new_pos
+      #     end
+      #   end
+      # end
     end
-    valid_pos
+    valid_pos.select! { |pos| !pos.nil? }
   end
 
 end
@@ -217,6 +238,20 @@ end
 class Knight < SteppingPiece
 
   def moves
+    diffs = [
+              [2,    1],
+              [2,   -1],
+              [1,    2],
+              [1,   -2],
+              [-1,   2],
+              [-1,  -2],
+              [-2,   1],
+              [-2,  -1]
+            ]
+    valid_pos = self.diffs.map do |diff|
+      step_move
+    end
+    valid_pos.select! { |pos| !pos.nil? }
   end
 
 end
