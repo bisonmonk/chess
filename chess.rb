@@ -19,8 +19,10 @@ class Piece
   def moves
     #don't allow a piece to move into a square already
     #occupied by a piece of the same color
+    # ||
+    #or move a sliding piece past a piece that blocks it
 
-    #should return an arrayh of place this piece can move to
+    #should return an array of place this piece can move to
   end
 
   #Write Board#dup before writing this method!!!!!!!!!!
@@ -32,9 +34,10 @@ class Piece
   #Filters out the #moves of a Piece that would leave
   #the player in check:
   def move_into_check?(pos)
-    #1. Duplicates the Board and performs the move(Board#dup)
-    #2. Looks to see if the player is in check after
-    #   the move (Board#in_check?).
+    #1. Duplicates the Board, i.e. #dup
+    #2. Performs the move on the duped_board (Board#dup)
+    #3. Looks to see if the player is in check after
+    #   the move (duped_board#in_check?).
   end
 
   #ASK IF THIS IS LEGIT BEFORE IMPLEMENTATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -45,8 +48,11 @@ class Piece
   #If your piece holds a reference to the original board,
   #you will need to update this reference to the new dupped board.
   #Failure to do so will cause your duped board to generate incorrect moves!
-  def dup
 
+  #Must pass the newly duped board to place duped Pieces
+  #on duped board
+  def dup(duped_board)
+    #assign self.board to duped_board
   end
 end
 
@@ -99,8 +105,11 @@ end
 class Board
   attr_accessor :grid#contains Piece or nil if no Piece
 
-
+  #Returns whether a player is in check
   def in_check?(color)
+    #find the position of the king on the board then,
+    #see if any of the opposing pieces can move to that
+    #position
   end
 
   #If the player is in check, and if none of the player's pieces
@@ -111,8 +120,11 @@ class Board
 
   #updates the 2d grid and also the moved piece's
   #position
-  #Raises exception if no piece at start || piece
-  #cannot move to end_pos
+
+  #Raises exception if no piece at start
+  # ||
+  #piece cannot move to end_pos
+
   #Board#move should raise an exception if it would leave you in check.
   def move(start, end_pos)
   end
@@ -129,6 +141,7 @@ class Board
   #so you may need to write your own Board#dup method
   #that will dup the individual pieces as well.
   def dup
+    #after duplicating board,
   end
 end
 
