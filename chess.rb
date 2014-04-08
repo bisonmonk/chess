@@ -88,20 +88,21 @@ class SlidingPiece < Piece
     self.move_dirs.each do |diff|
       current_pos = self.pos
 
-      until out_of_bounds?
+      until out_of_bounds?( current_pos )
         new_pos = get_new_pos(current_pos, diff)
 
-        if self.add_positions(self.pos, diff)
-          # is out of bounds
-          # then don't return any value (do nothing)
-        else
-          (1...self.board.length).map do |num_spaces|
-            dir * num_spaces
+        # look if there is a piece there
+        if self.board.empty?( new_pos )
+          if
           end
-        end
+        else
+
+
       # move in each direction until hit a next piece
       # ||
       # out of board boundaries
+
+      current_pos = new_pos
       end
     end
   end
@@ -162,6 +163,15 @@ class Board
   #have any #valid_moves, then the player is in checkmate.
   def checkmate?(color)
 
+  end
+
+  def at( pos )
+    row, col = pos
+    self.grid[row][col]
+  end
+
+  def empty?( pos )
+    self.at( pos ) == nil
   end
 
   #updates the 2d grid and also the moved piece's
