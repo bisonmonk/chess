@@ -76,8 +76,6 @@ class Piece
 end
 
 class SlidingPiece < Piece
-
-
   #The SlidingPiece class can implement #moves,
   #but it needs to know what directions a piece
   #can move in (diagonal, horizontally/vertically, both).
@@ -168,92 +166,61 @@ end
 class SteppingPiece < Piece
 
   def moves
-    raise "Cannot generate moves for an abstract SteppingPiece"
-  end
+    valid_pos = self.diffs.map do |diff|
+      current_pos = self.pos
 
-  def step_move
-    current_pos = self.pos
+      new_pos = get_new_pos(current_pos, diff)
 
-    # ||
-    # out of board boundaries
-    new_pos = get_new_pos(current_pos, diff)
-
-    # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
-    unless out_of_bounds( new_pos )
-      if self.board.empty?( new_pos )
-        return new_pos
-      else  # board[pos] is not empty
-        piece_at_pos = self.board.at( new_pos )
-        if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
+      # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
+      unless out_of_bounds(new_pos)
+        if self.board.empty?(new_pos)
           return new_pos
+        else  # board[pos] is not empty
+          piece_at_pos = self.board.at(new_pos)
+          if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
+            return new_pos
+          end
         end
       end
+      nil
     end
-    nil
+    valid_pos.select! { |pos| !pos.nil? }
+  end
+
+  def get_diffs
   end
 end
 
 class King < SteppingPiece
 
-  def moves
-    diffs = [
-               [1,   1],
-               [1,  -1],
-               [-1,  1],
-               [-1, -1],
-               [ 1,  0],
-               [-1,  0],
-               [ 0,  1],
-               [ 0, -1]
-            ]
-    #returns all move regardless of board boundaries
-    #valid_pos = []
-
-    # move in each direction until hit a next piece
-    valid_pos = self.diffs.map do |diff|
-      step_move
-      # current_pos = self.pos
-      #
-      # # ||
-      # # out of board boundaries
-      # new_pos = get_new_pos(current_pos, diff)
-      #
-      # # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
-      # unless out_of_bounds( new_pos )
-      #   if self.board.empty?( new_pos )
-      #     valid_pos << new_pos
-      #   else  # board[pos] is not empty
-      #     piece_at_pos = self.board.at( new_pos )
-      #     if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
-      #       valid_pos << new_pos
-      #     end
-      #   end
-      # end
-    end
-    valid_pos.select! { |pos| !pos.nil? }
+  def get_diffs
+    [
+    [1,   1],
+    [1,  -1],
+    [-1,  1],
+    [-1, -1],
+    [ 1,  0],
+    [-1,  0],
+    [ 0,  1],
+    [ 0, -1]
+           ]
   end
-
 end
 
 class Knight < SteppingPiece
 
-  def moves
-    diffs = [
-              [2,    1],
-              [2,   -1],
-              [1,    2],
-              [1,   -2],
-              [-1,   2],
-              [-1,  -2],
-              [-2,   1],
-              [-2,  -1]
+  def get_diffs
+    [
+    [2,    1],
+    [2,   -1],
+    [1,    2],
+    [1,   -2],
+    [-1,   2],
+    [-1,  -2],
+    [-2,   1],
+    [-2,  -1]
             ]
-    valid_pos = self.diffs.map do |diff|
-      step_move
-    end
-    valid_pos.select! { |pos| !pos.nil? }
   end
-
 end
 
 #DO THIS LAST CUZ NED SED SO
@@ -277,13 +244,13 @@ class Board
 
   end
 
-  def at( pos )
+  def at(pos)
     row, col = pos
     self.grid[row][col]
   end
 
-  def empty?( pos )
-    self.at( pos ).nil?
+  def empty?(pos)
+    self.at(pos).nil?
   end
 
   #updates the 2d grid and also the moved piece's
