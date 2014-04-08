@@ -115,6 +115,7 @@ class SlidingPiece < Piece
         current_pos = new_pos
       end
     end
+    valid_pos
   end
 
 end
@@ -138,6 +139,10 @@ class Rook < SlidingPiece
   #each SlidingPiece subclass (B,R,Q)
   #will use move_dirs in it's move method
   def move_dirs
+    [
+      [1,  0],  [0,  1],
+      [-1, 0],  [0, -1]
+    ]
   end
 end
 
@@ -147,10 +152,72 @@ class Queen < SlidingPiece
   #each SlidingPiece subclass (B,R,Q)
   #will use move_dirs in it's move method
   def move_dirs
+    [
+      [1,   1],
+      [1,  -1],
+      [-1,  1],
+      [-1, -1],
+      [ 1,  0],
+      [-1,  0],
+      [ 0,  1],
+      [ 0, -1]
+    ]
   end
 end
 
 class SteppingPiece < Piece
+
+  def moves
+    raise "Cannot generate moves for an abstract SteppingPiece"
+  end
+
+end
+
+class King < SteppingPiece
+
+  def moves
+    diffs = [
+               [1,   1],
+               [1,  -1],
+               [-1,  1],
+               [-1, -1],
+               [ 1,  0],
+               [-1,  0],
+               [ 0,  1],
+               [ 0, -1]
+            ]
+    #returns all move regardless of board boundaries
+    valid_pos = []
+
+    # move in each direction until hit a next piece
+    self.diffs.each do |diff|
+      current_pos = self.pos
+
+      # ||
+      # out of board boundaries
+      new_pos = get_new_pos(current_pos, diff)
+
+      # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
+      unless out_of_bounds( new_pos )
+        if self.board.empty?( new_pos )
+          valid_pos << new_pos
+        else  # board[pos] is not empty
+          piece_at_pos = self.board.at( new_pos )
+          if piece_at_pos.color != self.color && !piece_at_pos.is_a?(King) # King can't be adjacent to King
+            valid_pos << new_pos
+          end
+        end
+      end
+    end
+    valid_pos
+  end
+
+end
+
+class Knight < SteppingPiece
+
+  def moves
+  end
 
 end
 
