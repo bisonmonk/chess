@@ -1,3 +1,5 @@
+# SPLIT INTO SEPARATE FILES AS OF COMMIT [master 29972ce]
+
 #  * a b c d e f g h  *
 #  -------------------
 #8 | r k b K Q b k R | 8
