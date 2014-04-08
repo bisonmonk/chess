@@ -19,6 +19,8 @@ class Piece
   def moves
     #don't allow a piece to move into a square already
     #occupied by a piece of the same color
+
+    #should return an arrayh of place this piece can move to
   end
 
   #Write Board#dup before writing this method!!!!!!!!!!
@@ -49,6 +51,13 @@ class Piece
 end
 
 class SlidingPiece < Piece
+
+
+  #The SlidingPiece class can implement #moves,
+  #but it needs to know what directions a piece
+  #can move in (diagonal, horizontally/vertically, both).
+  def moves
+  end
 
   #each SlidingPiece subclass (B,R,Q)
   #will use move_dirs in it's move method
