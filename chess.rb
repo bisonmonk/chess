@@ -62,6 +62,12 @@ class Piece
   def dup(duped_board)
     #assign self.board to duped_board
   end
+
+  def add_positions(pos1, pos2)
+    [ pos1[0] + pos2[0],
+      pos1[1] + pos2[1] ]
+  end
+
 end
 
 class SlidingPiece < Piece
@@ -72,6 +78,19 @@ class SlidingPiece < Piece
   #can move in (diagonal, horizontally/vertically, both).
   #SlidingPiece#moves calls it's subclasses' #move_dirs method
   def moves
+    self.move_dirs.each |dir|
+      if self.add_positions(self.pos, dir)
+        # is out of bounds
+        # then don't return any value (do nothing)
+      else
+        (1...self.board.length).map do |num_spaces|
+          dir * num_spaces
+        end
+      end
+      # move in each direction until hit a next piece
+      # ||
+      # out of board boundaries
+    end
   end
 
 end
@@ -81,6 +100,12 @@ class Bishop < SlidingPiece
   #each SlidingPiece subclass (B,R,Q)
   #will use move_dirs in it's move method
   def move_dirs
+    [
+      [1,   1],
+      [1,  -1],
+      [-1,  1],
+      [-1, -1]
+    ]
   end
 end
 
