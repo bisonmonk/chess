@@ -47,6 +47,8 @@ class Board
 
   #Board#move should raise an exception if it would leave you in check.
   def move(start, end_pos)
+    #if its a pawn and its the first move set Pawn.first_move = false
+    #after move is made
   end
 
   ##valid_moves needs to make a move on the duped board to see
