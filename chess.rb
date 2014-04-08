@@ -14,6 +14,11 @@
 class Piece
   attr_accessor :pos, :board
 
+  def initialize(pos, board)
+    @pos = pos
+    @board = board
+  end
+
   #returns an array of all place a
   #piece can move to
   def moves
@@ -22,13 +27,14 @@ class Piece
     # ||
     #or move a sliding piece past a piece that blocks it
 
+    raise "Cannot implement moves for a general Pieces"
     #should return an array of place this piece can move to
   end
 
   #Write Board#dup before writing this method!!!!!!!!!!
   #Board#move calls this method therefore valid_moves MUST NOT CALL Board#move!!!
   def valid_moves
-
+    #filters out he #moves of a Piece that would leave the player in check
   end
 
   #Filters out the #moves of a Piece that would leave
@@ -36,6 +42,8 @@ class Piece
   def move_into_check?(pos)
     #1. Duplicates the Board, i.e. #dup
     #2. Performs the move on the duped_board (Board#dup)
+    #                         start, end_pos
+    #     duped_board.move(self.pos, pos)   (bc self is on original board)
     #3. Looks to see if the player is in check after
     #   the move (duped_board#in_check?).
   end
@@ -114,7 +122,7 @@ class Board
 
   #If the player is in check, and if none of the player's pieces
   #have any #valid_moves, then the player is in checkmate.
-  def checkmate?
+  def checkmate?(color)
 
   end
 
@@ -132,7 +140,7 @@ class Board
   ##valid_moves needs to make a move on the duped board to see
   #if a player is left in check.
   #Method Board#move! makes a move without checking if it is valid.
-  def move!
+  def move!(start, end_pos)
   end
 
   #should duplicate not only the Board, but
