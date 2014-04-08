@@ -12,11 +12,12 @@
 #  * a b c d e f g h  *
 
 class Piece
-  attr_accessor :pos, :board
+  attr_accessor :pos, :board, :color
 
-  def initialize(pos, board)
+  def initialize(pos, board, color)
     @pos = pos
     @board = board
+    @color = color
   end
 
   #returns an array of all place a
@@ -93,9 +94,10 @@ class SlidingPiece < Piece
 
         # look if there is a piece there
         if self.board.empty?( new_pos )
-          if
-          end
-        else
+          valid_pos << new_pos
+        else  # board[pos] is not empty
+          piece_at_pos = self.board.at( new_pos )
+          if piece_at_pos.color
 
 
       # move in each direction until hit a next piece
@@ -171,7 +173,7 @@ class Board
   end
 
   def empty?( pos )
-    self.at( pos ) == nil
+    self.at( pos ).nil?
   end
 
   #updates the 2d grid and also the moved piece's
