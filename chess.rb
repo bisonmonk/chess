@@ -56,8 +56,13 @@ class SlidingPiece < Piece
   #The SlidingPiece class can implement #moves,
   #but it needs to know what directions a piece
   #can move in (diagonal, horizontally/vertically, both).
+  #SlidingPiece#moves calls it's subclasses' #move_dirs method
   def moves
   end
+
+end
+
+class Bishop < SlidingPiece
 
   #each SlidingPiece subclass (B,R,Q)
   #will use move_dirs in it's move method
@@ -65,13 +70,21 @@ class SlidingPiece < Piece
   end
 end
 
-class Bishop < SlidingPiece
-end
-
 class Rook < SlidingPiece
+
+  #each SlidingPiece subclass (B,R,Q)
+  #will use move_dirs in it's move method
+  def move_dirs
+  end
 end
 
+#QUEEN CAN DO WHAT BISHOP + ROOK CAN DO
 class Queen < SlidingPiece
+
+  #each SlidingPiece subclass (B,R,Q)
+  #will use move_dirs in it's move method
+  def move_dirs
+  end
 end
 
 class SteppingPiece < Piece
