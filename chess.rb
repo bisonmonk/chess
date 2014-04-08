@@ -86,25 +86,33 @@ class SlidingPiece < Piece
     #returns all move regardless of board boundaries
     valid_pos = []
 
+
+    # move in each direction until hit a next piece
     self.move_dirs.each do |diff|
       current_pos = self.pos
 
+      # ||
+      # out of board boundaries
       until out_of_bounds?( current_pos )
         new_pos = get_new_pos(current_pos, diff)
 
+        # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
+        if out_of_bounds( new_pos )
+          break
         # look if there is a piece there
-        if self.board.empty?( new_pos )
+        elsif self.board.empty?( new_pos )
           valid_pos << new_pos
         else  # board[pos] is not empty
           piece_at_pos = self.board.at( new_pos )
-          if piece_at_pos.color
+          if piece_at_pos.color != self.color
+            valid_pos << new_pos
+          end
 
+          # Since found piece, need to break out of until loop
+          break
+        end
 
-      # move in each direction until hit a next piece
-      # ||
-      # out of board boundaries
-
-      current_pos = new_pos
+        current_pos = new_pos
       end
     end
   end
