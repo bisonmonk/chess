@@ -71,6 +71,11 @@ class Board
     opposing_pieces = pieces_by_color(opposing_color(color))
     #see if any of the opposing pieces can move to that
     #position
+    opposing_pieces.each do |opp_piece|
+      if opp_piece.moves.include?(king_pos)
+        return true
+      end
+    end
   end
 
   def opposing_color(color)
