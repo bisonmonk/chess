@@ -65,9 +65,32 @@ class Board
 
   #Returns whether a player is in check
   def in_check?(color)
+    king_pos = king_by_color(color).pos
     #find the position of the king on the board then,
+
+    opposing_pieces = pieces_by_color(opposing_color(color))
     #see if any of the opposing pieces can move to that
     #position
+  end
+
+  def opposing_color(color)
+    if color == :white
+      :black
+    else
+      :white
+    end
+  end
+
+  def king_by_color(color)
+    pieces.select { |piece| piece.is_a?(King) && piece.color == color }
+  end
+
+  def pieces_by_color(color)
+    pieces.select { |piece| piece.color == color }
+  end
+
+  def pieces
+    return @grid.flatten.compact
   end
 
   #If the player is in check, and if none of the player's pieces
