@@ -56,6 +56,18 @@ class Game
   end
 
   def display_board
+    brd = self.board.grid
+    (0...brd.length).each do |row|
+      (0...brd[row].length).each do |col|
+        square = self.board.at[row][col]
+        if square == nil
+          # Do we want default values that are overridden?
+          # Or prev_square that switches off black/white
+        print square
+      end
+      puts
+    end
+
   end
 
   def parse_move
@@ -82,12 +94,13 @@ class HumanPlayer
   end
 
   def prompt_for_name
-    names = ["Dick brains", "Fuck face", "Numb nuts", "Small dick", "Punk bitch",
-      "Buddy", "Douche bag"]
-    puts "GIMME YOUR FUCKIN NAME DIPSHIT"
+    names = ["Bobby Fischer", "Garry Kasparov", "Barry Kasparov", "Deep Blue", "Magnus",
+      "Buddy"]
+    puts "Please enter your name: "
     input = gets.chomp
     real_name = names.sample
-    puts "That's a nice name, but I'm gonna call you #{real_name}"
+    puts "That's a nice name, but I'm gonna call you #{real_name}. You better be good at this
+    #{real_name}."
     real_name
   end
 

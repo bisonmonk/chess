@@ -161,7 +161,7 @@ class Board
     elsif !self.at(start).moves.include?(end_pos)
       raise "Piece cannot move to end_pos."
     elsif !self.at(start).valid_moves.include?(end_pos)
-      raise "You cannot move into CHECK dumbass! Read the fuckin' rules."
+      raise "You cannot move into CHECK!"
     else
       move_piece(start, end_pos)
     end
