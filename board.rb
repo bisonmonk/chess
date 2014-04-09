@@ -7,14 +7,14 @@ require "stepping_piece.rb"
 
 #  * a b c d e f g h  *
 #  -------------------
-#8 | r k b K Q b k R | 8
+#8 | r k b K Q b k r | 8
 #7 | p p p p p p p p | 7
 #6 | - - - - - - - - | 6
 #5 | - - - - - - - - | 5
 #4 | - - - - - - - - | 4
 #3 | - - - - - - - - | 3
 #2 | p p p p p p p p | 2
-#1 | r k b K Q b k R | 1
+#1 | r k b K Q b k r | 1
 #  -------------------
 #  * a b c d e f g h  *
 
@@ -25,11 +25,42 @@ class Board
     @grid = Array.new(8) { Array.new(8, nil)}
 
     if setup
-      #setup pieces
+      setup_pieces
     end
   end
 
   def setup_pieces
+
+    #black
+    self.at([0,0]) =   Rook.new([0,0], self, :black)
+    self.at([0,1]) = Knight.new([0,1], self, :black)
+    self.at([0,2]) = Bishop.new([0,2], self, :black)
+    self.at([0,3]) =   King.new([0,3], self, :black)
+
+    self.at([0,4]) =  Queen.new([0,4], self, :black)
+    self.at([0,5]) = Bishop.new([0,5], self, :black)
+    self.at([0,6]) = Knight.new([0,6], self, :black)
+    self.at([0,7]) =   Rook.new([0,7], self, :black)
+
+
+    #white
+    self.at([7,0]) =   Rook.new([7,0], self, :white)
+    self.at([7,1]) = Knight.new([7,1], self, :white)
+    self.at([7,2]) = Bishop.new([7,2], self, :white)
+    self.at([7,3]) =   King.new([7,3], self, :white)
+
+    self.at([7,4]) =  Queen.new([7,4], self, :white)
+    self.at([7,5]) = Bishop.new([7,5], self, :white)
+    self.at([7,6]) = Knight.new([7,6], self, :white)
+    self.at([7,7]) =   Rook.new([7,7], self, :white)
+
+    #pawns
+    (0..7).to_a.each do |ind|
+      self.at([6,ind]) = Pawn.new([6,ind], self, :white)
+      self.at([1,ind]) = Pawn.new([1,ind], self, :black)
+    end
+
+  end
 
 
   #Returns whether a player is in check
