@@ -1,3 +1,5 @@
+load "piece.rb"
+
 # SlidingPiece.rb
 
 class SlidingPiece < Piece

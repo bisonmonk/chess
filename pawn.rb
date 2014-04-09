@@ -1,3 +1,4 @@
+load "stepping_piece.rb"
 # Pawn.rb
 
 #DO THIS LAST CUZ NED SED SO

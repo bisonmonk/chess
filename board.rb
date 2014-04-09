@@ -1,7 +1,7 @@
-require "piece.rb"
-require "pawn.rb"
-require "sliding_piece.rb"
-require "stepping_piece.rb"
+load "piece.rb"
+load "pawn.rb"
+load "sliding_piece.rb"
+load "stepping_piece.rb"
 
 # Board.rb
 
@@ -32,32 +32,32 @@ class Board
   def setup_pieces
 
     #black
-    self.at([0,0]) =   Rook.new([0,0], self, :black)
-    self.at([0,1]) = Knight.new([0,1], self, :black)
-    self.at([0,2]) = Bishop.new([0,2], self, :black)
-    self.at([0,3]) =   King.new([0,3], self, :black)
+    self.place_piece([0,0], Rook.new([0,0], self, :black))
+    self.place_piece([0,1], Knight.new([0,1], self, :black))
+    self.place_piece([0,2], Bishop.new([0,2], self, :black))
+    self.place_piece([0,3], King.new([0,3], self, :black))
 
-    self.at([0,4]) =  Queen.new([0,4], self, :black)
-    self.at([0,5]) = Bishop.new([0,5], self, :black)
-    self.at([0,6]) = Knight.new([0,6], self, :black)
-    self.at([0,7]) =   Rook.new([0,7], self, :black)
+    self.place_piece([0,4], Queen.new([0,4], self, :black))
+    self.place_piece([0,5], Bishop.new([0,5], self, :black))
+    self.place_piece([0,6], Knight.new([0,6], self, :black))
+    self.place_piece([0,7], Rook.new([0,7], self, :black))
 
 
-    #white
-    self.at([7,0]) =   Rook.new([7,0], self, :white)
-    self.at([7,1]) = Knight.new([7,1], self, :white)
-    self.at([7,2]) = Bishop.new([7,2], self, :white)
-    self.at([7,3]) =   King.new([7,3], self, :white)
+    #white =
+    self.place_piece([7,0], Rook.new([7,0], self, :white))
+    self.place_piece([7,1], Knight.new([7,1], self, :white))
+    self.place_piece([7,2], Bishop.new([7,2], self, :white))
+    self.place_piece([7,3], King.new([7,3], self, :white))
 
-    self.at([7,4]) =  Queen.new([7,4], self, :white)
-    self.at([7,5]) = Bishop.new([7,5], self, :white)
-    self.at([7,6]) = Knight.new([7,6], self, :white)
-    self.at([7,7]) =   Rook.new([7,7], self, :white)
+    self.place_piece([7,4], Queen.new([7,4], self, :white))
+    self.place_piece([7,5], Bishop.new([7,5], self, :white))
+    self.place_piece([7,6], Knight.new([7,6], self, :white))
+    self.place_piece([7,7], Rook.new([7,7], self, :white))
 
     #pawns
     (0..7).to_a.each do |ind|
-      self.at([6,ind]) = Pawn.new([6,ind], self, :white)
-      self.at([1,ind]) = Pawn.new([1,ind], self, :black)
+      self.place_piece([6,ind], Pawn.new([6,ind], self, :white))
+      self.place_piece([1,ind], Pawn.new([1,ind], self, :black))
     end
 
   end
@@ -121,6 +121,11 @@ class Board
 
   end
 
+  def place_piece(pos, piece)
+    row, col = pos
+    self.grid[row][col] = piece
+  end
+
   def at(pos)
     row, col = pos
     self.grid[row][col]
@@ -132,10 +137,10 @@ class Board
 
   def move_piece(from, to)
     piece = self.at(from)
-    self.at(to) = piece
+    self.place_piece(to, piece)
 
     piece.pos = to
-    self.at(from) = nil
+    self.place_piece(from, nil)
 
     # Handle Pawn first-move case
     if piece.is_a?(Pawn) && piece.first_move
@@ -188,7 +193,7 @@ class Board
 
     # For each piece, create new piece with old piece's stuff and new board as B
     all_pieces.each do |piece|
-      new_board.at( piece.pos ) = piece.dup(new_board)
+      new_board.place_piece( piece.pos, piece.dup(new_board))
     end
 
     new_board

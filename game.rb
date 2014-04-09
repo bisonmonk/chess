@@ -1,3 +1,11 @@
+# encoding: utf-8
+
+load "piece.rb"
+load "pawn.rb"
+load "sliding_piece.rb"
+load "stepping_piece.rb"
+load "board.rb"
+
 # Game.rb
 
 #  * a b c d e f g h  *
@@ -18,37 +26,44 @@
 #them to move. The Game should handle exceptions from
 #Board#move and report them.
 
-# encoding: utf-8
 
 class Game
   attr_accessor :board, :turn, :to_symbol
 
 
-  def initialize(p1 = HumanPlayer.new, p2 = HumanPlayer.new)
+  def initialize(p1 = nil, p2 = nil)
+
     @board = Board.new(true)
     @turn = :white
 
-    @to_symbol = {
-    :white => { King => ♔,
-                Queen => ♕,
-                Rook => ♖,
-                Bishop => ♗,
-                Knight => ♘,
-                Pawn => ♙},
+    @p1 ||= HumanPlayer.new
+    @p2 ||= HumanPlayer.new
 
-    :black => { King => ♚,
-                Queen => ♛,
-                Rook => ♜,
-                Bishop => ♝,
-                Knight => ♞,
-                Pawn => ♟}
+    @to_symbol = {
+    :white => { King => '♔',
+                Queen => '♕',
+                Rook => '♖',
+                Bishop => '♗',
+                Knight => '♘',
+                Pawn => '♙',
+                :square => '□'
+              },
+
+    :black => { King => '♚',
+                Queen => '♛',
+                Rook => '♜',
+                Bishop => '♝',
+                Knight => '♞',
+                Pawn => '♟',
+                :square => '■'
               }
+            }
 
     self.play
   end
 
   def play
-    until checkmate?(:white) || checkmate?(:black)
+    until self.board.checkmate?(:white) || self.board.checkmate?(:black)
       play_turn
       turn = opposing_color(turn)
     end
@@ -56,7 +71,15 @@ class Game
 
   def play_turn
     # display board
+    display_board
     # prompt self.turn player for move
+    # ADD NAME HERE
+    puts "#{self.turn}, which piece do you want to move? (letter, number)"
+    moving_piece = gets.chomp
+
+    print "to? (letter, number)"
+    move_to = gets.chomp
+
       # using their name
     # parse move
     # make move
@@ -73,24 +96,31 @@ class Game
 
   def display_board
     brd = self.board.grid
+    square_color = :black
+
     (0...brd.length).each do |row|
+      square_color = opposing_color(square_color)
+      print "#{row} "
       (0...brd[row].length).each do |col|
-        square = self.board.at[row][col]
-        if square == nil
-          # Do we want default values that are overridden?
-          # Or prev_square that switches off black/white
-        print square
+        square = self.board.at([row, col])
+        if square.is_a?(Piece)
+          print self.to_symbol[square.color][square.class] + ' '
+        else
+          print self.to_symbol[square_color][:square] + ' '
+        end
+        square_color = opposing_color(square_color)
       end
-      puts
+      print "\n"
     end
+    puts "  a b c d e f g h"
 
   end
 
   def parse_move
   end
 
-  def make_move(start, end)
-    self.board.move(start, end)
+  def make_move(start, end_pos)
+    self.board.move(start, end_pos)
   end
 
 end
@@ -117,3 +147,5 @@ class HumanPlayer
   end
 
 end
+
+g = Game.new(true)

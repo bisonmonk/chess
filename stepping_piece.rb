@@ -1,9 +1,10 @@
 # SteppingPiece.rb
+load "piece.rb"
 
 class SteppingPiece < Piece
 
   def moves
-    valid_pos = self.diffs.map do |diff|
+    valid_pos = self.get_diffs.map do |diff|
       current_pos = self.pos
 
       new_pos = get_new_pos(current_pos, diff)
