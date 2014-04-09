@@ -1,3 +1,8 @@
+require "piece.rb"
+require "pawn.rb"
+require "sliding_piece.rb"
+require "stepping_piece.rb"
+
 # Board.rb
 
 #  * a b c d e f g h  *
@@ -15,6 +20,17 @@
 
 class Board
   attr_accessor :grid#contains Piece or nil if no Piece
+
+  def initialize(setup)
+    @grid = Array.new(8) { Array.new(8, nil)}
+
+    if setup
+      #setup pieces
+    end
+  end
+
+  def setup_pieces
+
 
   #Returns whether a player is in check
   def in_check?(color)
