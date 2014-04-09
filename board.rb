@@ -139,12 +139,12 @@ class Board
   def move(start, end_pos)
 
     #NEED TO HANDLE EXCEPTION IN THE GAME CLASS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if self.at(start).empty?
+    if self.empty?(start)
       #MAYBE MAKE THIS IT'S OWN EXCEPTION
       raise "No piece at start location."
     elsif !self.at(start).moves.include?(end_pos)
       raise "Piece cannot move to end_pos."
-    else
+    elsif self.at(start).valid_moves.include?(end_pos)
       move_piece(start, end_pos)
     end
   end
@@ -173,7 +173,6 @@ class Board
     end
 
     new_board
-
   end
 end
 

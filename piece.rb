@@ -23,13 +23,17 @@ class Piece
 
   #Write Board#dup before writing this method!!!!!!!!!!
   #Board#move calls this method therefore valid_moves MUST NOT CALL Board#move!!!
-  def valid_moves
+  def valid_moves#playable_moves
     #filters out he #moves of a Piece that would leave the player in check
+    self.moves.select { |move| not move_into_check?(move) }
   end
 
   #Filters out the #moves of a Piece that would leave
   #the player in check:
   def move_into_check?(pos)
+    duped_board = self.board.dup
+    duped_board.move(self.pos, pos)
+    duped_board.in_check?
     #1. Duplicates the Board, i.e. #dup
         #2. Performs the move on the duped_board (Board#dup)
     #                         start, end_pos
