@@ -81,7 +81,7 @@ class Board
 
   #Returns whether a player is in check
   def in_check?(color)
-    king_pos = king_by_color(color).pos
+    king_pos = king_by_color(color).first.pos
     #find the position of the king on the board then,
 
     opposing_pieces = pieces_by_color(opposing_color(color))
@@ -163,7 +163,14 @@ class Board
     if self.empty?(start)
       #MAYBE MAKE THIS IT'S OWN EXCEPTION
       raise "No piece at start location."
-    elsif !self.at(start).moves.include?(end_pos)
+    elsif !self.at(start).moves.include?(end_pos) && !self.at(start).moves == end_pos
+      # p end_pos
+      # p self.at(start).moves
+      # p self.at(start).moves.include?(end_pos)
+      # p self.at(start).moves.equal?(end_pos)
+      # p self.at(start).moves == end_pos
+      # p !self.at(start).moves.include?(end_pos) && !self.at(start).moves == end_pos
+
       raise "Piece cannot move to end_pos."
     elsif !self.at(start).valid_moves.include?(end_pos)
       raise "You cannot move into CHECK!"

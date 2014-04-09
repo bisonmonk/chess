@@ -5,6 +5,7 @@ load "pawn.rb"
 load "sliding_piece.rb"
 load "stepping_piece.rb"
 load "board.rb"
+require 'debugger'
 
 # Game.rb
 
@@ -28,7 +29,7 @@ load "board.rb"
 
 
 class Game
-  attr_accessor :board, :turn, :to_symbol
+  attr_accessor :board, :turn, :to_symbol, :move_hash
 
 
   def initialize(p1 = nil, p2 = nil)
@@ -40,7 +41,7 @@ class Game
     @p2 ||= HumanPlayer.new
 
     @to_symbol = {
-    :white => { King => '♔',
+    :black => { King => '♔',
                 Queen => '♕',
                 Rook => '♖',
                 Bishop => '♗',
@@ -49,7 +50,7 @@ class Game
                 :square => '□'
               },
 
-    :black => { King => '♚',
+    :white => { King => '♚',
                 Queen => '♛',
                 Rook => '♜',
                 Bishop => '♝',
@@ -58,8 +59,7 @@ class Game
                 :square => '■'
               }
             }
-
-
+    @move_hash = build_move_hash
 
     self.play
   end
@@ -76,12 +76,18 @@ class Game
     display_board
     # prompt self.turn player for move
     # ADD NAME HERE
-    puts "#{self.turn}, which piece do you want to move? (letter, number)"
-    moving_piece = gets.chomp
+    begin
+      puts "#{self.turn}, which piece do you want to move? (letter, number)"
+      move_from = parse_move(gets.chomp)
 
-    print "to? (letter, number)"
-    move_to = gets.chomp
+      print "to? (letter, number)"
+      move_to = parse_move(gets.chomp)
 
+      self.board.move(move_from, move_to)
+      self.turn = opposing_color(self.turn)
+    rescue
+      retry
+    end
       # using their name
     # parse move
     # make move
@@ -90,10 +96,13 @@ class Game
 
   def build_move_hash
     move_hash = {}
-    ('a'..'h').to_a do |letter|
-      (0..7).to_a do |number|
-        move_hash[letter] = number
+    col = 0
+    ('a'..'h').to_a.each do |letter|
+      (0..7).to_a.each do |row|
+        move = letter + row.to_s
+        move_hash[move] = [row, col]
       end
+      col += 1
     end
     move_hash
   end
@@ -128,8 +137,9 @@ class Game
 
   end
 
-  def parse_move(from, to)
+  def parse_move(pos)
     # feed from into hash
+    self.move_hash[pos]
   end
 
   def make_move(start, end_pos)

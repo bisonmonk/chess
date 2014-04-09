@@ -25,6 +25,8 @@ class Piece
   #Board#move calls this method therefore valid_moves MUST NOT CALL Board#move!!!
   def valid_moves#playable_moves
     #filters out he #moves of a Piece that would leave the player in check
+    # p "All moves in valid_moves: #{self.moves}"
+    # self.moves.select { |move| p "Move in select is #{move}"; not move_into_check?(move) }
     self.moves.select { |move| not move_into_check?(move) }
   end
 
@@ -33,7 +35,7 @@ class Piece
   def move_into_check?(pos)
     duped_board = self.board.dup
     duped_board.move!(self.pos, pos)
-    duped_board.in_check?
+    duped_board.in_check?(self.color)
     #1. Duplicates the Board, i.e. #dup
         #2. Performs the move on the duped_board (Board#dup)
     #                         start, end_pos
@@ -57,7 +59,7 @@ class Piece
     #assign self.board to duped_board
 
     if self.class == Pawn
-      self.class.new(self.pos, new_board, self.color, self.first_move)
+      new_pawn = self.class.new(self.pos, new_board, self.color, self.first_move)
     else
       self.class.new(self.pos, new_board, self.color)
     end

@@ -5,9 +5,9 @@ load "stepping_piece.rb"
 class Pawn < SteppingPiece
   attr_accessor :first_move
 
-  def initialize(pos, board, color)
+  def initialize(pos, board, color, first_move = true)
     super(pos, board, color)
-    @first_move = true
+    @first_move = first_move
   end
 
   def get_diffs
@@ -15,11 +15,13 @@ class Pawn < SteppingPiece
 
     if self.color == :black
       swap_colors(diffs)
+    else
+      diffs
     end
   end
 
   def move_diffs
-    if get_valid_attack_diffs.empty?
+    if not get_valid_attack_diffs.empty?
       get_valid_attack_diffs #REFACTOR THIS SHIT!!!!!!!!!!!!!!!
     elsif self.first_move
       [
@@ -42,7 +44,7 @@ class Pawn < SteppingPiece
 
   def get_valid_attack_diffs
     valid_attack_diffs = []
-    attack_diffs.each do |attack_diff|
+    self.attack_diffs.each do |attack_diff|
       new_pos = get_new_pos(self.pos, attack_diff)
       if !self.board.empty?(new_pos)
         valid_attack_diffs << attack_diff

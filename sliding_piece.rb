@@ -22,7 +22,7 @@ class SlidingPiece < Piece
         new_pos = get_new_pos(current_pos, diff)
 
         # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
-        if out_of_bounds( new_pos )
+        if out_of_bounds?( new_pos )
           break
         # look if there is a piece there
         elsif self.board.empty?( new_pos )
