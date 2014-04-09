@@ -21,12 +21,28 @@
 # encoding: utf-8
 
 class Game
-  attr_accessor :board, :turn
+  attr_accessor :board, :turn, :to_symbol
 
 
   def initialize(p1 = HumanPlayer.new, p2 = HumanPlayer.new)
     @board = Board.new(true)
     @turn = :white
+
+    @to_symbol = {
+    :white => { King => ♔,
+                Queen => ♕,
+                Rook => ♖,
+                Bishop => ♗,
+                Knight => ♘,
+                Pawn => ♙},
+
+    :black => { King => ♚,
+                Queen => ♛,
+                Rook => ♜,
+                Bishop => ♝,
+                Knight => ♞,
+                Pawn => ♟}
+              }
 
     self.play
   end
@@ -78,10 +94,6 @@ class Game
   end
 
 end
-
-
-
-
 
 
 #Game#play method just continuously calls play_turn
