@@ -76,6 +76,7 @@ class Board
         return true
       end
     end
+    false
   end
 
   def opposing_color(color)
@@ -124,6 +125,18 @@ class Board
   def move(start, end_pos)
     #if its a pawn and its the first move set Pawn.first_move = false
     #after move is made
+
+    #NEED TO HANDLE EXCEPTION IN THE GAME CLASS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if self.at(start).empty?
+      #MAYBE MAKE THIS IT'S OWN EXCEPTION
+      raise "No piece at start location."
+    elsif !self.at(start).moves.include?(end_pos)
+      raise "Piece cannot move to end_pos."
+    else
+      # piece_location = self.at(start).pos
+      # self.grid[]
+      # self.at(start).pos = end_pos
+    end
   end
 
   ##valid_moves needs to make a move on the duped board to see
