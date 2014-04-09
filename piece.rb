@@ -31,7 +31,7 @@ class Piece
   #the player in check:
   def move_into_check?(pos)
     #1. Duplicates the Board, i.e. #dup
-    #2. Performs the move on the duped_board (Board#dup)
+        #2. Performs the move on the duped_board (Board#dup)
     #                         start, end_pos
     #     duped_board.move(self.pos, pos)   (bc self is on original board)
     #3. Looks to see if the player is in check after
@@ -49,8 +49,15 @@ class Piece
 
   #Must pass the newly duped board to place duped Pieces
   #on duped board
-  def dup(duped_board)
+  def dup(new_board)
     #assign self.board to duped_board
+
+    if self.class == Pawn
+      self.class.new(self.pos, new_board, self.color, self.first_move)
+    else
+      self.class.new(self.pos, new_board, self.color)
+    end
+
   end
 
   def get_new_pos(pos1, pos2)

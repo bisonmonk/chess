@@ -162,6 +162,18 @@ class Board
   #that will dup the individual pieces as well.
   def dup
     #after duplicating board,
+    new_board = Board.new(false)
+
+    # Get all old board pieces
+    all_pieces = self.pieces
+
+    # For each piece, create new piece with old piece's stuff and new board as B
+    all_pieces.each do |piece|
+      new_board.at( piece.pos ) = piece.dup(new_board)
+    end
+
+    new_board
+
   end
 end
 
