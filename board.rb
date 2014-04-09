@@ -62,6 +62,22 @@ class Board
 
   end
 
+  def checkmate?(color)
+    if in_check?(color)
+      all_pieces_valid_moves = []
+
+      pieces_by_color(color).each do |piece|
+        all_pieces_valid_moves += piece.valid_moves
+      end
+
+      all_pieces_valid_moves.empty?
+    end
+  end
+
+
+
+    # None of piece
+
 
   #Returns whether a player is in check
   def in_check?(color)
