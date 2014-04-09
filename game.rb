@@ -17,15 +17,78 @@
 #players (assume two human players for now) prompting
 #them to move. The Game should handle exceptions from
 #Board#move and report them.
+
+# encoding: utf-8
+
 class Game
-  attr_accessor :board
+  attr_accessor :board, :turn
+
+
+  def initialize(p1 = HumanPlayer.new, p2 = HumanPlayer.new)
+    @board = Board.new(true)
+    @turn = :white
+
+    self.play
+  end
+
+  def play
+    until checkmate?(:white) || checkmate?(:black)
+      play_turn
+      turn = opposing_color(turn)
+    end
+  end
+
+  def play_turn
+    # display board
+    # prompt self.turn player for move
+      # using their name
+    # parse move
+    # make move
+      # handle move exceptions with begin/rescue/retry
+  end
+
+  def opposing_color(color)
+    if color == :white
+      :black
+    else
+      :white
+    end
+  end
+
+  def display_board
+  end
+
+  def parse_move
+  end
+
+  def make_move(start, end)
+    self.board.move(start, end)
+  end
 
 end
+
+
+
+
+
 
 #Game#play method just continuously calls play_turn
 #READ TIPS AT BOTTOM OF CHESS SPEC
 class HumanPlayer
+  attr_accessor :name
 
-  def play_turn
+  def initialize
+    @name = prompt_for_name
   end
+
+  def prompt_for_name
+    names = ["Dick brains", "Fuck face", "Numb nuts", "Small dick", "Punk bitch",
+      "Buddy", "Douche bag"]
+    puts "GIMME YOUR FUCKIN NAME DIPSHIT"
+    input = gets.chomp
+    real_name = names.sample
+    puts "That's a nice name, but I'm gonna call you #{real_name}"
+    real_name
+  end
+
 end
