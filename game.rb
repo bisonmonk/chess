@@ -59,6 +59,8 @@ class Game
               }
             }
 
+
+
     self.play
   end
 
@@ -84,6 +86,16 @@ class Game
     # parse move
     # make move
       # handle move exceptions with begin/rescue/retry
+  end
+
+  def build_move_hash
+    move_hash = {}
+    ('a'..'h').to_a do |letter|
+      (0..7).to_a do |number|
+        move_hash[letter] = number
+      end
+    end
+    move_hash
   end
 
   def opposing_color(color)
@@ -116,7 +128,8 @@ class Game
 
   end
 
-  def parse_move
+  def parse_move(from, to)
+    # feed from into hash
   end
 
   def make_move(start, end_pos)
