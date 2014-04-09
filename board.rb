@@ -114,6 +114,20 @@ class Board
     self.at(pos).nil?
   end
 
+  def move_piece(from, to)
+    piece = self.at(from)
+    self.at(to) = piece
+
+    piece.pos = to
+    self.at(from) = nil
+
+    # Handle Pawn first-move case
+    if piece.is_a?(Pawn) && piece.first_move
+      piece.first_move = false
+    end
+  end
+
+
   #updates the 2d grid and also the moved piece's
   #position
 
@@ -123,8 +137,6 @@ class Board
 
   #Board#move should raise an exception if it would leave you in check.
   def move(start, end_pos)
-    #if its a pawn and its the first move set Pawn.first_move = false
-    #after move is made
 
     #NEED TO HANDLE EXCEPTION IN THE GAME CLASS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if self.at(start).empty?
@@ -133,9 +145,7 @@ class Board
     elsif !self.at(start).moves.include?(end_pos)
       raise "Piece cannot move to end_pos."
     else
-      # piece_location = self.at(start).pos
-      # self.grid[]
-      # self.at(start).pos = end_pos
+      move_piece(start, end_pos)
     end
   end
 
