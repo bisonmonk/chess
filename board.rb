@@ -144,7 +144,9 @@ class Board
       raise "No piece at start location."
     elsif !self.at(start).moves.include?(end_pos)
       raise "Piece cannot move to end_pos."
-    elsif self.at(start).valid_moves.include?(end_pos)
+    elsif !self.at(start).valid_moves.include?(end_pos)
+      raise "You cannot move into CHECK dumbass! Read the fuckin' rules."
+    else
       move_piece(start, end_pos)
     end
   end
@@ -153,6 +155,7 @@ class Board
   #if a player is left in check.
   #Method Board#move! makes a move without checking if it is valid.
   def move!(start, end_pos)
+    move_piece(start, end_pos)
   end
 
   #should duplicate not only the Board, but

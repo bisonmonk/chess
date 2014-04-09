@@ -32,7 +32,7 @@ class Piece
   #the player in check:
   def move_into_check?(pos)
     duped_board = self.board.dup
-    duped_board.move(self.pos, pos)
+    duped_board.move!(self.pos, pos)
     duped_board.in_check?
     #1. Duplicates the Board, i.e. #dup
         #2. Performs the move on the duped_board (Board#dup)
