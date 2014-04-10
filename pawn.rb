@@ -34,7 +34,7 @@ class Pawn < SteppingPiece
       new_pos = get_new_pos(current_pos, diff)
 
       unless out_of_bounds?(new_pos)
-        if self.board.empty?(new_pos) && attacking
+        if !self.board.empty?(new_pos) && attacking
           piece_at_pos = self.board.at(new_pos)
           if piece_at_pos.color != self.color
               doable_moves << new_pos
