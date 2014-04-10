@@ -17,7 +17,7 @@ class Piece
     # ||
     #or move a sliding piece past a piece that blocks it
 
-    raise "Cannot implement moves for a general Pieces"
+    raise "Cannot implement moves for a general Piece"
     #should return an array of place this piece can move to
   end
 

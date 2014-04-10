@@ -46,7 +46,7 @@ class Pawn < SteppingPiece
     valid_attack_diffs = []
     self.attack_diffs.each do |attack_diff|
       new_pos = get_new_pos(self.pos, attack_diff)
-      if !self.board.empty?(new_pos)
+      if !self.board.empty?(new_pos) && self.board.at(new_pos).color != self.color
         valid_attack_diffs << attack_diff
       end
     end

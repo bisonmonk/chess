@@ -2,6 +2,8 @@ load "piece.rb"
 load "pawn.rb"
 load "sliding_piece.rb"
 load "stepping_piece.rb"
+require 'debugger'
+
 
 # Board.rb
 
@@ -35,9 +37,9 @@ class Board
     self.place_piece([0,0], Rook.new([0,0], self, :black))
     self.place_piece([0,1], Knight.new([0,1], self, :black))
     self.place_piece([0,2], Bishop.new([0,2], self, :black))
-    self.place_piece([0,3], King.new([0,3], self, :black))
+    self.place_piece([0,3], Queen.new([0,3], self, :black))
 
-    self.place_piece([0,4], Queen.new([0,4], self, :black))
+    self.place_piece([0,4], King.new([0,4], self, :black))
     self.place_piece([0,5], Bishop.new([0,5], self, :black))
     self.place_piece([0,6], Knight.new([0,6], self, :black))
     self.place_piece([0,7], Rook.new([0,7], self, :black))
@@ -47,9 +49,9 @@ class Board
     self.place_piece([7,0], Rook.new([7,0], self, :white))
     self.place_piece([7,1], Knight.new([7,1], self, :white))
     self.place_piece([7,2], Bishop.new([7,2], self, :white))
-    self.place_piece([7,3], King.new([7,3], self, :white))
+    self.place_piece([7,3], Queen.new([7,3], self, :white))
 
-    self.place_piece([7,4], Queen.new([7,4], self, :white))
+    self.place_piece([7,4], King.new([7,4], self, :white))
     self.place_piece([7,5], Bishop.new([7,5], self, :white))
     self.place_piece([7,6], Knight.new([7,6], self, :white))
     self.place_piece([7,7], Rook.new([7,7], self, :white))
@@ -70,6 +72,7 @@ class Board
         all_pieces_valid_moves += piece.valid_moves
       end
 
+      puts "Checkmate #{color}! #{opposing_color(color)} wins!"
       all_pieces_valid_moves.empty?
     end
   end
@@ -81,6 +84,7 @@ class Board
 
   #Returns whether a player is in check
   def in_check?(color)
+    debugger
     king_pos = king_by_color(color).first.pos
     #find the position of the king on the board then,
 
@@ -143,9 +147,9 @@ class Board
     self.place_piece(from, nil)
 
     # Handle Pawn first-move case
-    if piece.is_a?(Pawn) && piece.first_move
-      piece.first_move = false
-    end
+    # if piece.is_a?(Pawn) && piece.first_move
+    #   piece.first_move = false
+    # end
   end
 
 
@@ -159,23 +163,26 @@ class Board
   #Board#move should raise an exception if it would leave you in check.
   def move(start, end_pos)
 
+    # piece_moves
+
     #NEED TO HANDLE EXCEPTION IN THE GAME CLASS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if self.empty?(start)
       #MAYBE MAKE THIS IT'S OWN EXCEPTION
       raise "No piece at start location."
-    elsif !self.at(start).moves.include?(end_pos) && !self.at(start).moves == end_pos
-      # p end_pos
-      # p self.at(start).moves
-      # p self.at(start).moves.include?(end_pos)
-      # p self.at(start).moves.equal?(end_pos)
-      # p self.at(start).moves == end_pos
-      # p !self.at(start).moves.include?(end_pos) && !self.at(start).moves == end_pos
 
+    elsif !self.at(start).moves.include?(end_pos)
       raise "Piece cannot move to end_pos."
+
     elsif !self.at(start).valid_moves.include?(end_pos)
       raise "You cannot move into CHECK!"
+
     else
       move_piece(start, end_pos)
+      # Handle Pawn first-move case
+      piece = self.at(end_pos)
+      if piece.is_a?(Pawn) && piece.first_move
+        piece.first_move = false
+      end
     end
   end
 

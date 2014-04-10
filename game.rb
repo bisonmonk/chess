@@ -85,7 +85,8 @@ class Game
 
       self.board.move(move_from, move_to)
       self.turn = opposing_color(self.turn)
-    rescue
+    rescue StandardError => e
+      puts e
       retry
     end
       # using their name
@@ -98,9 +99,9 @@ class Game
     move_hash = {}
     col = 0
     ('a'..'h').to_a.each do |letter|
-      (0..7).to_a.each do |row|
+      8.downto(1).to_a.each do |row|
         move = letter + row.to_s
-        move_hash[move] = [row, col]
+        move_hash[move] = [8-row, col]
       end
       col += 1
     end
@@ -121,7 +122,7 @@ class Game
 
     (0...brd.length).each do |row|
       square_color = opposing_color(square_color)
-      print "#{row} "
+      print "#{8 - row} "
       (0...brd[row].length).each do |col|
         square = self.board.at([row, col])
         if square.is_a?(Piece)
