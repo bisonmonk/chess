@@ -30,7 +30,7 @@ require 'debugger'
 
 class Game
   attr_accessor :board, :turn, :to_symbol, :move_hash
-  attr_reader :p1, :p2
+  attr_accessor :p1, :p2
 
 
   def initialize(p1 = nil, p2 = nil)
@@ -42,7 +42,7 @@ class Game
     @p2 ||= HumanPlayer.new
 
     @to_symbol = {
-    :black => { King => '♔',
+    :white => { King => '♔',
                 Queen => '♕',
                 Rook => '♖',
                 Bishop => '♗',
@@ -51,7 +51,7 @@ class Game
                 :square => '□'
               },
 
-    :white => { King => '♚',
+    :black => { King => '♚',
                 Queen => '♛',
                 Rook => '♜',
                 Bishop => '♝',
@@ -66,12 +66,12 @@ class Game
   end
 
   def play
-    until self.board.checkmated?(:white) || self.board.checkmated?(:black)
+    until self.board.checkmated?(:white)# || self.board.checkmated?(:black)
       play_turn
       turn = opposing_color(turn)
     end
 
-    "Checkmate! #{self.turn} wins!"
+    puts "Checkmate! #{ opposing_color(self.turn) } wins!"
   end
 
   def play_turn
@@ -153,6 +153,11 @@ class Game
     self.board.move(start, end_pos)
   end
 
+  # def current_player
+  #   self.p1.name if :white == self.turn
+  #   self.p2.name if :black == self.turn
+  # end
+
 end
 
 
@@ -173,7 +178,7 @@ class HumanPlayer
     real_name = names.sample
     puts "That's a nice name, but I'm gonna call you #{real_name}. You better be good at this
     #{real_name}."
-    real_name
+    return real_name
   end
 
 end

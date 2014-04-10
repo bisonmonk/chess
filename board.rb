@@ -65,19 +65,13 @@ class Board
   end
 
   def checkmated?(color)
-    if in_check?(color)
+    if self.in_check?(color)
       all_pieces_valid_moves = []
 
-      pieces_by_color(color).each do |piece|
+      self.pieces_by_color(color).each do |piece|
         all_pieces_valid_moves += piece.valid_moves
-
-        if not all_pieces_valid_moves.empty?
-          piece.class
-        end
       end
 
-      puts "ENTERING Checkmate #{color}! #{opposing_color(color)} MAY wins!"
-      p all_pieces_valid_moves
       return all_pieces_valid_moves.empty?
     end
   end
