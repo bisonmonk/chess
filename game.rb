@@ -30,6 +30,7 @@ require 'debugger'
 
 class Game
   attr_accessor :board, :turn, :to_symbol, :move_hash
+  attr_reader :p1, :p2
 
 
   def initialize(p1 = nil, p2 = nil)
@@ -65,10 +66,12 @@ class Game
   end
 
   def play
-    until self.board.checkmate?(:white) || self.board.checkmate?(:black)
+    until self.board.checkmated?(:white) || self.board.checkmated?(:black)
       play_turn
       turn = opposing_color(turn)
     end
+
+    "Checkmate! #{self.turn} wins!"
   end
 
   def play_turn
@@ -120,6 +123,8 @@ class Game
     brd = self.board.grid
     square_color = :black
 
+    puts "    #{self.p2.name}"
+    puts
     (0...brd.length).each do |row|
       square_color = opposing_color(square_color)
       print "#{8 - row} "
@@ -135,6 +140,7 @@ class Game
       print "\n"
     end
     puts "  a b c d e f g h"
+    puts "\n     #{self.p1.name}"
 
   end
 

@@ -64,16 +64,21 @@ class Board
 
   end
 
-  def checkmate?(color)
+  def checkmated?(color)
     if in_check?(color)
       all_pieces_valid_moves = []
 
       pieces_by_color(color).each do |piece|
         all_pieces_valid_moves += piece.valid_moves
+
+        if not all_pieces_valid_moves.empty?
+          piece.class
+        end
       end
 
-      puts "Checkmate #{color}! #{opposing_color(color)} wins!"
-      all_pieces_valid_moves.empty?
+      puts "ENTERING Checkmate #{color}! #{opposing_color(color)} MAY wins!"
+      p all_pieces_valid_moves
+      return all_pieces_valid_moves.empty?
     end
   end
 
@@ -84,7 +89,7 @@ class Board
 
   #Returns whether a player is in check
   def in_check?(color)
-    debugger
+    #debugger
     king_pos = king_by_color(color).first.pos
     #find the position of the king on the board then,
 
